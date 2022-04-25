@@ -1,9 +1,11 @@
 package com.example.hairbysilkeapp
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListAdapter
 import androidx.lifecycle.Observer
@@ -41,5 +43,11 @@ class MainActivity : AppCompatActivity() {
         mRep.getBookings().observe(this, getAllObserver)
 
         //lvNames.onItemClickListener = AdapterView.OnItemClickListener { parent, view, pos, id -> onClickPerson(parent, pos)}
+    }
+
+    fun onClickNyAftale(view: View) {
+        val nyAftale = Intent(this, NyBookingActivity::class.java)
+        startActivity(nyAftale)
+
     }
 }
