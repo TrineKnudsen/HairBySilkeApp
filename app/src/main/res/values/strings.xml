@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">HairBySilkeApp</string>
+    <string name="navn">Navn</string>
+    <string name="note">Note</string>
+    <string name="behandling">Behandling</string>
+    <string name="tidspunkt">Tidspunkt</string>
+    <string name="email">Email</string>
+    <string name="tlf">Tlf</string>
+    <string name="aflys_booking">Aflys Booking</string>
+    <string name="ring_op">Ring op</string>
+    <string name="gem_booking">Gem Booking</string>
+    <string name="tag_billede">Tag billede</string>
+    <string name="ny_booking">Ny booking</string>
 </resources>
