@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListAdapter
 import android.widget.SimpleAdapter
+import androidx.core.view.get
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.example.hairbysilkeapp.database.BookingRepository
@@ -18,8 +20,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    val REQUEST_RESULT = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -48,13 +54,19 @@ class MainActivity : AppCompatActivity() {
         }
         mRep.getBookings().observe(this, getAllObserver)
 
-        //lvNames.onItemClickListener = AdapterView.OnItemClickListener { parent, view, pos, id -> onClickPerson(parent, pos)}
+        lvBookings.onItemClickListener = AdapterView.OnItemClickListener { parent, view, pos, id -> onClickBooking(parent,pos)}
+    }
+
+    private fun onClickBooking(listview: AdapterView<*>,pos: Int) {
+        val booking = listview.getItemAtPosition(pos) as BEBooking
+        ChosenBooking.setChosenBooking(booking)
+        val intent = Intent(this, NyBookingActivity::class.java)
+
+        startActivityForResult(intent, REQUEST_RESULT)
     }
 
     fun onClickNyAftale(view: View) {
         val nyAftale = Intent(this, NyBookingActivity::class.java)
         startActivity(nyAftale)
     }
-
-
 }
