@@ -69,4 +69,15 @@ class MainActivity : AppCompatActivity() {
         val nyAftale = Intent(this, NyBookingActivity::class.java)
         startActivity(nyAftale)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_RESULT) {
+            if (resultCode == 1){
+
+            }
+        }
+
+        ChosenBooking.setChosenBooking(null)
+    }
 }
