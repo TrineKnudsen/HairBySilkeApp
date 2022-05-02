@@ -8,12 +8,17 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListAdapter
+import android.widget.SimpleAdapter
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.example.hairbysilkeapp.database.BookingRepository
 import com.example.hairbysilkeapp.model.BEBooking
+import com.example.hairbysilkeapp.model.BETreatment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,8 +31,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun insertTestData(){
         val mRep = BookingRepository.get()
-        mRep.insert(BEBooking(0, "1208", "Tine", "Balayage", "ole@mail.com"))
-        mRep.insert(BEBooking(0, "Katrine", "12344678", ":(", "Katrine@mail.com"))
+        mRep.insert(BETreatment(0, "Balayage", "123"))
+        mRep.insert(BEBooking(0, "120895", 1, 1, "","Har mørkt hår"))
+        mRep.insert(BEBooking(0, "120895", 2, 1, "","Har lyst hår"))
         }
 
     private fun setupDataObserver() {
@@ -48,6 +54,7 @@ class MainActivity : AppCompatActivity() {
     fun onClickNyAftale(view: View) {
         val nyAftale = Intent(this, NyBookingActivity::class.java)
         startActivity(nyAftale)
-
     }
+
+
 }

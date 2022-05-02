@@ -7,12 +7,11 @@ import androidx.room.PrimaryKey
 class BEBooking (
 
     @PrimaryKey(autoGenerate = true) var id: Int,
-    var datetime: String, var customer: String, var treatment: String,
+    var datetime: String, var customerId: Int, var treatmentId: Int, var treatmentName: String,
     var note: String
     ) {
 
         public override fun toString(): String {
-            return "$datetime $customer - $treatment"
+            return "$datetime $treatmentName"
         }
-
 }

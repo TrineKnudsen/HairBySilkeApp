@@ -3,7 +3,10 @@ package com.example.hairbysilkeapp.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.hairbysilkeapp.model.BEBooking
+import com.example.hairbysilkeapp.model.BETreatment
 import java.lang.IllegalStateException
 import java.util.concurrent.Executors
 
@@ -13,13 +16,19 @@ class BookingRepository private constructor(private val context: Context){
         BookingDatabase::class.java,"booking-database").build()
 
     private val bookingDAO = database.bookingDAO()
+    private val treatmentDAO = database.treatmentDAO()
 
     fun getBookings(): LiveData<List<BEBooking>> = bookingDAO.getBookings()
+    fun getTreatments(): LiveData<List<BETreatment>> = treatmentDAO.getTreatments()
 
     private val executor = Executors.newSingleThreadExecutor()
 
     fun insert(f: BEBooking) {
         executor.execute{bookingDAO.insert(f)}
+    }
+
+    fun insert(f: BETreatment){
+        executor.execute{treatmentDAO.insert(f)}
     }
 
     companion object {
@@ -37,5 +46,4 @@ class BookingRepository private constructor(private val context: Context){
             throw IllegalStateException("FriendRepository must be initialized")
         }
     }
-
 }
