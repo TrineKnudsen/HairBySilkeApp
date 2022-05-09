@@ -47,9 +47,11 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/browser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="www.hairbysilke.dk"/>
+            android:onClick="onClickBrowser"
+            android:text="http://www.google.dk"/>
 
     </LinearLayout>
 

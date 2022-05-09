@@ -2,14 +2,12 @@ package com.example.hairbysilkeapp
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListAdapter
-import android.widget.SimpleAdapter
+import android.widget.*
 import androidx.core.view.get
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -79,5 +77,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         ChosenBooking.setChosenBooking(null)
+    }
+
+    fun onClickBrowser(view: View){
+        val url = "http://www.google.dk"
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        startActivity(i)
     }
 }
