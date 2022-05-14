@@ -1,14 +1,18 @@
 <resources>
     <string name="app_name">HairBySilkeApp</string>
-    <string name="navn">Navn</string>
+    <string name="name">Navn</string>
     <string name="note">Note</string>
-    <string name="behandling">Behandling</string>
-    <string name="tidspunkt">Tidspunkt</string>
+    <string name="treatment">Behandling</string>
+    <string name="time">Tidspunkt</string>
     <string name="email">Email</string>
-    <string name="tlf">Tlf</string>
-    <string name="aflys_booking">Aflys Booking</string>
-    <string name="ring_op">Ring op</string>
-    <string name="gem_booking">Gem Booking</string>
-    <string name="tag_billede">Tag billede</string>
-    <string name="ny_booking">Ny booking</string>
+    <string name="phone">Tlf</string>
+    <string name="cancel_booking">Aflys Booking</string>
+    <string name="call">Ring op</string>
+    <string name="save_booking">Gem Booking</string>
+    <string name="pic">Tag billede</string>
+    <string name="new_booking">Ny booking</string>
+    <string name="bookings">Dagens bookinger</string>
+    <string name="newBookingBtn">Ny booking</string>
+    <string name="browserlink">http://www.google.dk</string>
+    <string name="update_booking">Opdatér</string>
 </resources>

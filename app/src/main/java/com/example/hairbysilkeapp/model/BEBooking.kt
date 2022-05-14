@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-class BEBooking (
+class BEBooking(
 
-    @PrimaryKey(autoGenerate = true) var id: Int,
+    @PrimaryKey(autoGenerate = true) var id: Int?,
     var datetime: String, var customerId: Int, var treatmentId: Int, var treatmentName: String,
     var note: String
     ) {

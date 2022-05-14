@@ -8,31 +8,31 @@
         android:id="@+id/tvHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ny_booking"
+        android:text="@string/new_booking"
         android:textSize="20sp"
         android:layout_centerHorizontal="true"
         />
 
     <LinearLayout
-        android:id="@+id/layoutNyBooking"
+        android:id="@+id/layoutNewBooking"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tvHeader"
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/etNavn"
+            android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:hint="@string/navn" />
+            android:hint="@string/name" />
 
         <EditText
-            android:id="@+id/etTlf"
+            android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:hint="@string/tlf" />
+            android:hint="@string/phone" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -42,18 +42,18 @@
             android:hint="@string/email" />
 
         <EditText
-            android:id="@+id/etTidspunkt"
+            android:id="@+id/etTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:hint="@string/tidspunkt" />
+            android:hint="@string/time" />
 
         <EditText
-            android:id="@+id/etBehandling"
+            android:id="@+id/etTreatment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:hint="@string/behandling" />
+            android:hint="@string/treatment" />
 
         <EditText
             android:id="@+id/etNote"
@@ -68,33 +68,62 @@
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"/>
 
-        <Button
-            android:id="@+id/btnBillede"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tag_billede"/>
+            android:layout_gravity="center">
 
-        <Button
-            android:id="@+id/btnGemBooking"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+            </ImageView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/btnCall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/call"/>
+
+                <Button
+                    android:id="@+id/btnPic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pic"
+                    android:layout_marginRight="10dp"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/gem_booking"/>
+            android:layout_gravity="center">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save_booking"
+                android:onClick="createBooking"/>
 
-        <Button
-            android:id="@+id/btnAflysBooking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/aflys_booking"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/update_booking"
+                android:onClick="updateBooking"/>
 
-        <Button
-            android:id="@+id/btnRingOp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ring_op"/>
-
+            <Button
+                android:id="@+id/btnCancelBooking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_booking"/>
+        </LinearLayout>
     </LinearLayout>
-
-
-
-
 </RelativeLayout>

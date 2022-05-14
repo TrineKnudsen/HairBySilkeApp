@@ -13,9 +13,4 @@ import com.example.hairbysilkeapp.model.BETreatment
 @Database(entities = [ BETreatment::class, BEBooking::class,], version = 1)
 public abstract class BookingDatabase : RoomDatabase(){
     abstract fun treatmentDAO(): TreatmentDAO
-    abstract fun bookingDAO(): BookingDAO
-
-
-
-
-}
+    abstract fun bookingDAO(): BookingDAO }

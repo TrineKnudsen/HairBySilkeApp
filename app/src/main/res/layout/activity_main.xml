@@ -16,7 +16,7 @@
             android:id="@+id/tvHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dagens bookinger"
+            android:text="@string/bookings"
             android:textSize="20dp"
             android:textStyle="bold"/>
 
@@ -42,7 +42,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ny aftale"
+                android:text="@string/newBookingBtn"
                 android:onClick="onClickNyAftale"/>
         </LinearLayout>
 
@@ -51,8 +51,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClickBrowser"
-            android:text="http://www.google.dk"/>
-
+            android:text="@string/browserlink"/>
     </LinearLayout>
-
 </RelativeLayout>

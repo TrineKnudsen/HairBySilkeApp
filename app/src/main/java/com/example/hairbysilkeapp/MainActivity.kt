@@ -20,25 +20,14 @@ class MainActivity : AppCompatActivity() {
 
     val REQUEST_RESULT = 1
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         BookingRepository.initialize(this)
-        insertTestData()
 
         setupDataObserver()
     }
-
-    private fun insertTestData(){
-        val mRep = BookingRepository.get()
-        mRep.insert(BETreatment(0, "Balayage", "123"))
-        mRep.insert(BEBooking(0, "120895", 1, 1, "","Har mørkt hår"))
-        mRep.insert(BEBooking(0, "120895", 2, 1, "","Har lyst hår"))
-        }
 
     private fun setupDataObserver() {
         val mRep = BookingRepository.get()
@@ -65,17 +54,16 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickNyAftale(view: View) {
         val nyAftale = Intent(this, NyBookingActivity::class.java)
-        startActivity(nyAftale)
+        startActivityForResult(nyAftale, REQUEST_RESULT)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_RESULT) {
             if (resultCode == 1){
-
+                setupDataObserver()
             }
         }
-
         ChosenBooking.setChosenBooking(null)
     }
 

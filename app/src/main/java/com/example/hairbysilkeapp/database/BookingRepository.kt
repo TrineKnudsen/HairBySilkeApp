@@ -27,6 +27,10 @@ class BookingRepository private constructor(private val context: Context){
         executor.execute{bookingDAO.insert(f)}
     }
 
+    fun update(b: BEBooking) {
+        executor.execute{bookingDAO.update(b)}
+    }
+
     fun insert(f: BETreatment){
         executor.execute{treatmentDAO.insert(f)}
     }
