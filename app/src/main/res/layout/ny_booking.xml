@@ -104,20 +104,10 @@
 
 
         <LinearLayout
+            android:id="@+id/buttonli"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/save_booking"
-                android:onClick="createBooking"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/update_booking"
-                android:onClick="updateBooking"/>
 
             <Button
                 android:id="@+id/btnCancelBooking"

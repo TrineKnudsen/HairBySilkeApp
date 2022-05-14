@@ -1,11 +1,18 @@
 package com.example.hairbysilkeapp
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.marginLeft
+import com.example.hairbysilkeapp.R.color.teal_200
 import com.example.hairbysilkeapp.database.BookingRepository
 import com.example.hairbysilkeapp.model.BEBooking
 import kotlinx.android.synthetic.main.ny_booking.*
+import kotlin.math.absoluteValue
 
 class NyBookingActivity : AppCompatActivity() {
     private var RESULT_CODE = 0
@@ -19,14 +26,30 @@ class NyBookingActivity : AppCompatActivity() {
 
     private fun setBookingOnPage() {
         var b = ChosenBooking.getChosenBooking()
-        if (b==null) tvHeader.text == "Opret ny booking"
-        tvHeader.text = b?.datetime
-        etTreatment.setText(b?.treatmentName)
-        etTime.setText(b?.datetime)
-        etNote.setText(b?.note)
+        val dynamicBtn = Button(this)
+        dynamicBtn.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+        )
+        dynamicBtn.setBackgroundResource(R.drawable.button)
+        if (b==null) {
+            tvHeader.text == "Opret ny booking"
+            dynamicBtn.text = "Tilføj ny booking"
+            buttonli.addView(dynamicBtn)
+            dynamicBtn.setOnClickListener{createBooking()}
+
+        } else if (b!=null){
+            dynamicBtn.text = "Opdater booking"
+            buttonli.addView(dynamicBtn)
+            tvHeader.text = b?.datetime
+            etTreatment.setText(b?.treatmentName)
+            etTime.setText(b?.datetime)
+            etNote.setText(b?.note)
+            dynamicBtn.setOnClickListener{updateBooking()}
+        }
     }
 
-    fun createBooking(view: View){
+    fun createBooking(){
         RESULT_CODE = 1
         val mRep = BookingRepository.get()
         mRep.insert(BEBooking(
@@ -39,7 +62,7 @@ class NyBookingActivity : AppCompatActivity() {
         ))
     }
 
-    fun updateBooking(view: View){
+    fun updateBooking(){
         RESULT_CODE = 1
         var id = ChosenBooking.getChosenBooking()?.id
         var treatment = etTreatment.text.toString()
