@@ -41,6 +41,30 @@ class BookingRepository private constructor(private val context: Context){
         fun initialize(context: Context) {
             if (INSTANCE == null) {
                 INSTANCE = BookingRepository(context)
+                INSTANCE!!.insert(
+                    BETreatment(
+                    0,
+                    "Balayage",
+                    1200
+                ))
+                INSTANCE!!.insert(
+                    BETreatment(
+                        0,
+                        "Dame klip",
+                        500
+                    ))
+                INSTANCE!!.insert(
+                    BETreatment(
+                        0,
+                        "Mand klip",
+                        400
+                    ))
+                INSTANCE!!.insert(
+                    BETreatment(
+                        0,
+                        "Retning af bryn",
+                        150
+                    ))
             }
         }
 

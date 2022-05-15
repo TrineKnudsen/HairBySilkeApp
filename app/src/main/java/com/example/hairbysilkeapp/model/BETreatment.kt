@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 class BETreatment (
     @PrimaryKey(autoGenerate = true) var id: Int,
-    var treatmentName: String, var price: String
+    var treatmentName: String, var price: Int
         ) {
     public override fun toString(): String {
         return "$treatmentName"

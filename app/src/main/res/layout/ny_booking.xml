@@ -48,12 +48,11 @@
             android:minHeight="48dp"
             android:hint="@string/time" />
 
-        <EditText
-            android:id="@+id/etTreatment"
+        <Spinner
+            android:id="@+id/spTreatment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:hint="@string/treatment" />
+            android:minHeight="48dp"/>
 
         <EditText
             android:id="@+id/etNote"
