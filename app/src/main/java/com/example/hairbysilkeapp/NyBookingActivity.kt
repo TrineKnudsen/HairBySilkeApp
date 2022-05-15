@@ -69,7 +69,7 @@ class NyBookingActivity : AppCompatActivity() {
         var time = etTime.text.toString()
         var note = etNote.text.toString()
         val mRep = BookingRepository.get()
-        mRep.update(BEBooking(id, time, 0, 0, treatment, note))
+        mRep.update(BEBooking(id!!, time, 0, 0, treatment, note))
     }
 
     override fun onBackPressed() {
