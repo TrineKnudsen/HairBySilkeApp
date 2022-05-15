@@ -1,10 +1,7 @@
 package com.example.hairbysilkeapp.database.DAO
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.hairbysilkeapp.model.BEBooking
 
 @Dao
@@ -19,4 +16,7 @@ interface BookingDAO {
 
     @Update
     fun update(b: BEBooking)
+
+    @Query("DELETE FROM BEBooking WHERE id = (:id)")
+    fun delete(id: Long)
 }
