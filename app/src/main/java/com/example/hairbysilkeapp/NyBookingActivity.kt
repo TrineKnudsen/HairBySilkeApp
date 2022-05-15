@@ -1,7 +1,9 @@
 package com.example.hairbysilkeapp
 
 import android.content.ContentValues
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,6 +15,7 @@ import androidx.lifecycle.Observer
 import com.example.hairbysilkeapp.R.color.teal_200
 import com.example.hairbysilkeapp.database.BookingRepository
 import com.example.hairbysilkeapp.model.BEBooking
+import com.example.hairbysilkeapp.model.BECustomer
 import com.example.hairbysilkeapp.model.BETreatment
 import kotlinx.android.synthetic.main.ny_booking.*
 import kotlin.math.absoluteValue
@@ -65,6 +68,8 @@ class NyBookingActivity : AppCompatActivity() {
             tvHeader.text = b?.datetime
             ChosenBooking.getChosenBooking()?.treatmentId?.let { spinner.setSelection(it) }
             etTime.setText(b?.datetime)
+            etName.setText(b?.customer.name)
+            etPhone.setText(b?.customer.phone)
             etNote.setText(b?.note)
             dynamicBtn.setOnClickListener{updateBooking()}
         }
@@ -73,24 +78,39 @@ class NyBookingActivity : AppCompatActivity() {
     fun createBooking(){
         RESULT_CODE = 1
         val mRep = BookingRepository.get()
+
+        var customer = BECustomer(
+            0,
+            name = etName.text.toString(),
+            phone = etPhone.text.toString()
+        )
+        mRep.insert(customer)
+
         mRep.insert(BEBooking(
             treatmentName = spinner.selectedItem.toString(),
             id = 0,
             treatmentId = spinner.selectedItemId.toInt(),
             datetime = etTime.text.toString(),
             note = etNote.text.toString(),
-            customerId = 0
+            customer = customer
         ))
     }
 
     fun updateBooking(){
         RESULT_CODE = 1
         var id = ChosenBooking.getChosenBooking()?.id
+        var cust = ChosenBooking.getChosenBooking()?.customer
         var treatment = spinner.selectedItem.toString()
         var time = etTime.text.toString()
         var note = etNote.text.toString()
         val mRep = BookingRepository.get()
-        mRep.update(BEBooking(id!!, time, 0, 0, treatment, note))
+        mRep.update(BEBooking(id!!, time, cust!!, 0, treatment, note))
+    }
+
+    fun onClickCall(view: View){
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = Uri.parse("tel:${ChosenBooking.getChosenBooking()?.customer?.phone}")
+        startActivity(intent)
     }
 
     override fun onBackPressed() {

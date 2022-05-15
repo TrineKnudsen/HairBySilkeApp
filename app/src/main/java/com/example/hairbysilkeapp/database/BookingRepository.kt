@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.hairbysilkeapp.model.BEBooking
+import com.example.hairbysilkeapp.model.BECustomer
 import com.example.hairbysilkeapp.model.BETreatment
 import java.lang.IllegalStateException
 import java.util.concurrent.Executors
@@ -17,12 +18,14 @@ class BookingRepository private constructor(private val context: Context){
 
     private val bookingDAO = database.bookingDAO()
     private val treatmentDAO = database.treatmentDAO()
+    private val customerDAO = database.customerDAO()
 
     fun getBookings(): LiveData<List<BEBooking>> = bookingDAO.getBookings()
     fun getTreatments(): LiveData<List<BETreatment>> = treatmentDAO.getTreatments()
 
     private val executor = Executors.newSingleThreadExecutor()
 
+    //Booking CRUD
     fun insert(f: BEBooking) {
         executor.execute{bookingDAO.insert(f)}
     }
@@ -31,9 +34,16 @@ class BookingRepository private constructor(private val context: Context){
         executor.execute{bookingDAO.update(b)}
     }
 
+    //Treatment CRUD
     fun insert(f: BETreatment){
         executor.execute{treatmentDAO.insert(f)}
     }
+
+    //Customer CRUD
+    fun insert(c: BECustomer){
+        executor.execute{customerDAO.insert(c)}
+    }
+
 
     companion object {
         private var INSTANCE: BookingRepository? = null
