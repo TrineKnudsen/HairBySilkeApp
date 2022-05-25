@@ -2,23 +2,34 @@ package com.example.hairbysilkeapp
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.core.view.get
-import androidx.lifecycle.LiveData
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import com.example.hairbysilkeapp.database.BookingRepository
 import com.example.hairbysilkeapp.model.BEBooking
-import com.example.hairbysilkeapp.model.BETreatment
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val PERMISSION_REQUEST_CODE = 1
     val REQUEST_RESULT = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         BookingRepository.initialize(this)
 
         setupDataObserver()
+        checkPermissions()
     }
 
     private fun setupDataObserver() {
@@ -59,11 +71,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_RESULT) {
-            if (resultCode == 1){
-                setupDataObserver()
-            }
-        }
         ChosenBooking.setChosenBooking(null)
     }
 
@@ -73,4 +80,20 @@ class MainActivity : AppCompatActivity() {
         i.data = Uri.parse(url)
         startActivity(i)
     }
+
+    /**
+     * Diverse
+     */
+    //Checks if the app has the required permissions, and promps the user with the ones missing.
+    private fun checkPermissions(){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        val permissions = mutableListOf<String>()
+        if (!isGranted(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) permissions.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (!isGranted(android.Manifest.permission.CAMERA)) permissions.add(android.Manifest.permission.CAMERA)
+        if (permissions.size > 0) ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
+    }
+
+    private fun isGranted(permission: String): Boolean =
+        ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+
 }

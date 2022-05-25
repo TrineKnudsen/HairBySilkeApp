@@ -1,36 +1,40 @@
 package com.example.hairbysilkeapp
 
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.telephony.SmsManager
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginLeft
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
-import com.example.hairbysilkeapp.R.color.teal_200
 import com.example.hairbysilkeapp.database.BookingRepository
 import com.example.hairbysilkeapp.model.BEBooking
 import com.example.hairbysilkeapp.model.BECustomer
 import com.example.hairbysilkeapp.model.BETreatment
 import kotlinx.android.synthetic.main.ny_booking.*
-import java.util.jar.Manifest
-import kotlin.math.absoluteValue
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NyBookingActivity : AppCompatActivity() {
-    private var RESULT_CODE = 0
+    private var RESULT_CODE = 1
     lateinit var spinner: Spinner
     val PERMISSION_REQUEST_CODE = 1
+    var mFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -79,12 +83,12 @@ class NyBookingActivity : AppCompatActivity() {
             etName.setText(b?.customer.name)
             etPhone.setText(b?.customer.phone)
             etNote.setText(b?.note)
-            dynamicBtn.setOnClickListener{updateBooking()}
+            dynamicBtn.setOnClickListener{updateBooking()
+            imgView.setImageURI(b?.pic?.toUri())}
         }
     }
 
     fun createBooking(){
-        RESULT_CODE = 1
         val mRep = BookingRepository.get()
 
         var customer = BECustomer(
@@ -100,19 +104,19 @@ class NyBookingActivity : AppCompatActivity() {
             treatmentId = spinner.selectedItemId.toInt(),
             datetime = etTime.text.toString(),
             note = etNote.text.toString(),
-            customer = customer
+            customer = customer,
+            pic = mFile?.absolutePath.toString()
         ))
     }
 
     fun updateBooking(){
-        RESULT_CODE = 1
         var id = ChosenBooking.getChosenBooking()?.id
         var cust = ChosenBooking.getChosenBooking()?.customer
         var treatment = spinner.selectedItem.toString()
         var time = etTime.text.toString()
         var note = etNote.text.toString()
         val mRep = BookingRepository.get()
-        mRep.update(BEBooking(id!!, time, cust!!, 0, treatment, note))
+        mRep.update(BEBooking(id!!, time, cust!!, 0, treatment, note,mFile?.toUri().toString()))
     }
 
     fun onClickCall(view: View){
@@ -126,7 +130,6 @@ class NyBookingActivity : AppCompatActivity() {
         var id = ChosenBooking.getChosenBooking()?.id
         mRep.cancelBooking(id)
         onClickMessage()
-
     }
 
     fun onClickMessage() {
@@ -167,6 +170,67 @@ class NyBookingActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     *  File
+     */
+    fun onTakeByFile(view: View) {
+        mFile = getOutputMediaFile("Camera01") // create a file to save the image
+
+        if (mFile == null) {
+            Toast.makeText(this, "Could not create file...", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // create Intent to take a picture
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        // Add extra to inform the app where to put the image.
+        val applicationId = "com.example.hairbysilkeapp"
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
+            this,
+            "${applicationId}.provider",
+            mFile!!))
+
+        fileCallback.launch(intent)
+    }
+
+    val fileCallback = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){ activityResult ->
+        val mImage = findViewById<ImageView>(R.id.imgView)
+        if (activityResult.resultCode == RESULT_OK)
+            showImageFromFile(mImage, mFile!!)
+        else handleOther(activityResult.resultCode)
+    }
+
+    private fun showImageFromFile(img: ImageView, f: File) {
+        img.setImageURI(Uri.fromFile(f))
+        img.setBackgroundColor(Color.RED)
+    }
+
+    // return a new file with a timestamp name in a folder named [folder] in
+    // the external directory for pictures.
+    // Return null if the file cannot be created
+    private fun getOutputMediaFile(folder: String): File? {
+        // in an emulated device you can see the external files in /sdcard/Android/data/<your app>.
+        val mediaStorageDir = File(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), folder)
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(TAG, "failed to create directory")
+                return null
+            }
+        }
+
+        // Create a media file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val postfix = "jpg"
+        val prefix = "IMG"
+        return File(mediaStorageDir.path +
+                File.separator + prefix +
+                "_" + timeStamp + "." + postfix)
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>,
                                             grantResults: IntArray) {
@@ -174,6 +238,18 @@ class NyBookingActivity : AppCompatActivity() {
         Log.d(TAG, "Permission: " + permissions[0] + " - grantResult: " + grantResults[0])
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             sendMessage()
+        }
+
+        var cameraGranted = true
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            for (i in 0..permissions.size -1) {
+                if (permissions[i] == android.Manifest.permission.CAMERA && grantResults[i] == PackageManager.PERMISSION_DENIED)
+                    cameraGranted = false
+            }
+        }
+        if (!cameraGranted) {
+            val btnByFile = findViewById<Button>(R.id.btnPic)
+            btnByFile.isEnabled = false
         }
     }
 
@@ -184,5 +260,10 @@ class NyBookingActivity : AppCompatActivity() {
                 "Ring til os hvis du har spørgsmål, eller for at aftale en ny tid." +
                 "Venlig hilsen Silke"
         m.sendTextMessage(ChosenBooking.getChosenBooking()!!.customer.phone,null, text, null, null)
+    }
+
+    private fun handleOther(resultCode: Int){
+        if (resultCode == RESULT_CANCELED)
+            Toast.makeText(this, "Annulleret...", Toast.LENGTH_LONG).show()
     }
 }
